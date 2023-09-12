@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://vpn.rjst.de:5432/integration
+    username: postgres
+    password: PMZk1m2RgQ0foHsTh3yEsbBmR4vhl8
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+springdoc:
+  swagger-ui:
+    use-root-path: true

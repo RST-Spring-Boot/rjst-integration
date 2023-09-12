@@ -1,0 +1,142 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <NAME>
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <NAME>
+  template:
+    metadata:
+      labels:
+        app: <NAME>
+    spec:
+      containers:
+        - name: <NAME>
+          image: localhost/dev/<NAME>:<TAG>
+          env:
+            - name: TZ
+              value: Europe/Berlin
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "0.1"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+          volumeMounts:
+            - name: <NAME>-cfg
+              mountPath: /app/config
+            - name: cache-volume
+              mountPath: /tmp
+      volumes:
+        - name: <NAME>-cfg
+          configMap:
+            name: <NAME>-cfg
+        - name: cache-volume
+          emptyDir:
+            sizeLimit: 500Mi
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: <NAME>
+  namespace: dev
+  labels:
+    app: <NAME>
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: <NAME>
+
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: <NAME>-cert
+  namespace: dev
+spec:
+  secretName: <NAME>-cert
+  issuerRef:
+    name: self-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - <NAME>.rjst.de
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: <NAME>
+  namespace: dev
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-red-https@kubernetescrd,traefik-whitelist@kubernetescrd
+spec:
+  rules:
+    - host: <NAME>.rjst.de
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: <NAME>
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - <NAME>.rjst.de
+      secretName: <NAME>-cert
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: <NAME>-cfg
+  namespace: dev
+data:
+  application.yaml: |
+    server:
+      error:
+        include-message: always
+    spring:
+      datasource:
+        url: jdbc:postgresql://vpn.rjst.de:5432/integration
+        username: postgres
+        password: PMZk1m2RgQ0foHsTh3yEsbBmR4vhl8
+      jpa:
+        hibernate:
+          ddl-auto: none
+        open-in-view: false
+      boot:
+        admin:
+          client:
+            url: http://rjst-spring-boot-admin.dev.svc.cluster.local:8080
+            instance:
+              prefer-ip: false
+              service-base-url: https://rjst-integration.rjst.de
+              management-base-url: http://rjst-integration.dev.svc.cluster.local:8080
+              name: rjst-integration
+    springdoc:
+      swagger-ui:
+        use-root-path: true
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: '*'
+      endpoint:
+        health:
+          show-details: always
