@@ -168,6 +168,7 @@ pipeline {
                     withCredentials([file(credentialsId: 'kubeConfig', variable: 'KUBECONFIG')]) {
                         sh """sed -i 's/<TAG>/${VERSION}/' ${NAME}.yaml"""
                         sh """sed -i 's/<NAME>/${NAME}/' ${NAME}.yaml"""
+                        sh """kubectl delete -f ${NAME}.yaml"""
                         sh """kubectl apply -f ${NAME}.yaml"""
                     }
                 }
