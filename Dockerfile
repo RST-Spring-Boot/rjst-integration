@@ -1,5 +1,5 @@
 # The deployment Image
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:17.0.8_7-jre-jammy
 
 RUN mkdir -p /app
 
