@@ -31,8 +31,9 @@ public class DataController {
         for (int i = 0;  i <= amount; i++) {
 
             final Address address = faker.address();
-            userEntity.setName(address.firstName());
             userEntity.setId(0L);
+            userEntity.setName(address.firstName());
+            userEntity.setStatus(0);
             result.add(userRepository.save(userEntity));
         }
 
