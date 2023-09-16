@@ -28,7 +28,7 @@ public class DataController {
         final Faker faker = new Faker(Locale.GERMAN);
         final UserEntity userEntity = new UserEntity();
 
-        for (int i = 0;  i <= amount; i++) {
+        for (int i = 1;  i <= amount; i++) {
 
             final Address address = faker.address();
             userEntity.setId(0L);
