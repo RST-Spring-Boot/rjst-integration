@@ -19,4 +19,7 @@ public class UserEntity {
 
     private Integer status;
 
+    @Enumerated(EnumType.STRING)
+    private FlowType flowType;
+
 }

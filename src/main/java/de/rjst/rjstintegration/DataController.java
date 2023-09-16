@@ -23,7 +23,7 @@ public class DataController {
 
 
     @PostMapping
-    public final ResponseEntity<List<UserEntity>> postFakeData(@RequestParam final int amount) {
+    public final ResponseEntity<List<UserEntity>> postFakeData(@RequestParam final int amount, @RequestParam final FlowType flowType) {
         final List<UserEntity> result = new ArrayList<>();
         final Faker faker = new Faker(Locale.GERMAN);
         final UserEntity userEntity = new UserEntity();
@@ -34,6 +34,7 @@ public class DataController {
             userEntity.setId(0L);
             userEntity.setName(address.firstName());
             userEntity.setStatus(0);
+            userEntity.setFlowType(flowType);
             result.add(userRepository.save(userEntity));
         }
 

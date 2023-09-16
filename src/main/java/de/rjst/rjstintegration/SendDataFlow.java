@@ -25,7 +25,7 @@ public class SendDataFlow {
 
     @InboundChannelAdapter(channel = "databaseToInterfaceChannel", poller = @Poller(fixedDelay = "1000"))
     public List<UserEntity> fetchDataFromDatabase() {
-        return userRepository.findByStatus(0);
+        return userRepository.findByStatusAndFlowType(0, FlowType.A);
     }
 
     @ServiceActivator(inputChannel = "databaseToInterfaceChannel")
