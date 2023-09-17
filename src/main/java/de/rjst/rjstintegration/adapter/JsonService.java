@@ -1,5 +1,6 @@
-package de.rjst.rjstintegration;
+package de.rjst.rjstintegration.adapter;
 
+import de.rjst.rjstintegration.database.UserEntity;
 import de.rjst.rjstintegration.config.FeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

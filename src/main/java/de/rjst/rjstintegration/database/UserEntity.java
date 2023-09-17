@@ -1,5 +1,6 @@
-package de.rjst.rjstintegration;
+package de.rjst.rjstintegration.database;
 
+import de.rjst.rjstintegration.FlowType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
