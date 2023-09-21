@@ -1,19 +1,26 @@
 package de.rjst.rjstintegration;
 
 import de.rjst.rjstintegration.adapter.JsonService;
+import de.rjst.rjstintegration.database.UserDto;
 import de.rjst.rjstintegration.database.UserEntity;
 import de.rjst.rjstintegration.database.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.integration.annotation.InboundChannelAdapter;
-import org.springframework.integration.annotation.Poller;
+import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.dsl.IntegrationFlow;
+import org.springframework.integration.dsl.Pollers;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,13 +33,9 @@ public class SendDataFlow {
     private final JsonService jsonService;
 
 
-    @InboundChannelAdapter(channel = "databaseToInterfaceChannel", poller = @Poller(fixedDelay = "1000"))
-    public List<UserEntity> fetchDataFromDatabase() {
-        return userRepository.findByStatusAndFlowType(0, FlowType.A);
-    }
-
-    @ServiceActivator(inputChannel = "databaseToInterfaceChannel")
+    @ServiceActivator(inputChannel = "receiverChannel")
     public void sendDataToInterface(List<UserEntity> users) {
+        log.info("Test");
         for (final UserEntity user : users) {
             jsonService.sendData(user);
             user.setStatus(1);
@@ -41,14 +44,30 @@ public class SendDataFlow {
     }
 
     @Bean
-    public MessageChannel databaseToInterfaceChannel() {
+    public MessageChannel insertChannel() {
         return new DirectChannel();
     }
 
     @Bean
-    public MessageChannel outputChannel() {
+    public MessageChannel receiverChannel() {
         return new DirectChannel();
     }
+
+    @Bean
+    public MessageChannel replyChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public IntegrationFlow firstFlow(@Qualifier("dataSupplier") final Supplier<List<UserEntity>> dataSupplier,
+                                     final MessageChannel receiverChannel) {
+        return IntegrationFlow
+                .fromSupplier(dataSupplier,
+                        flow -> flow.poller(Pollers.fixedDelay(Duration.ofSeconds(10L))))
+                .channel(receiverChannel)
+                .get();
+    }
+
 
 
 }

@@ -6,6 +6,7 @@ import com.github.javafaker.Faker;
 import de.rjst.rjstintegration.FlowType;
 import de.rjst.rjstintegration.database.UserEntity;
 import de.rjst.rjstintegration.database.UserRepository;
+import de.rjst.rjstintegration.flow.UserGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import java.util.Locale;
 @RequestMapping("data")
 public class DataController {
 
-    private final UserRepository userRepository;
+    private final UserGateway userGateway;
 
 
     @PostMapping
@@ -38,7 +39,7 @@ public class DataController {
             userEntity.setName(address.firstName());
             userEntity.setStatus(0);
             userEntity.setFlowType(flowType);
-            result.add(userRepository.save(userEntity));
+            result.add(userGateway.insertUser(userEntity));
         }
 
         return ResponseEntity.ok(result);
