@@ -1,25 +1,21 @@
 package de.rjst.rjstintegration;
 
 import de.rjst.rjstintegration.adapter.JsonService;
-import de.rjst.rjstintegration.database.UserDto;
 import de.rjst.rjstintegration.database.UserEntity;
 import de.rjst.rjstintegration.database.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -61,13 +57,11 @@ public class SendDataFlow {
     @Bean
     public IntegrationFlow firstFlow(@Qualifier("dataSupplier") final Supplier<List<UserEntity>> dataSupplier,
                                      final MessageChannel receiverChannel) {
-        return IntegrationFlow
-                .fromSupplier(dataSupplier,
+        return IntegrationFlow.fromSupplier(dataSupplier,
                         flow -> flow.poller(Pollers.fixedDelay(Duration.ofSeconds(10L))))
                 .channel(receiverChannel)
                 .get();
     }
-
 
 
 }
