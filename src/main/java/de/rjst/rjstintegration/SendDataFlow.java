@@ -31,7 +31,6 @@ public class SendDataFlow {
 
     @ServiceActivator(inputChannel = "receiverChannel")
     public void sendDataToInterface(List<UserEntity> users) {
-        log.info("Test");
         for (final UserEntity user : users) {
             jsonService.sendData(user);
             user.setStatus(1);
