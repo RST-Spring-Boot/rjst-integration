@@ -3,13 +3,15 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
     parameters {
-        booleanParam(name: 'RELEASE', defaultValue: false, description: '')
         string(name: 'VERSION', defaultValue: '', description: '')
+        booleanParam(name: 'RELEASE', defaultValue: false, description: '')
+        booleanParam(name: 'ARTIFACTORY', defaultValue: false, description: '')
+        booleanParam(name: 'INIT_DEPLOYMENT', defaultValue: false, description: '')
     }
     environment {
         HARBOR_URL = 'core.harbor.rjst.de'
         HARBOR_PREFIX = 'dev'
-        ARTIFACTORY_URL = 'https://artifactory.rjst.de/artifactory/'
+        ARTIFACTORY_URL = 'https://artifactory.rjst.de/artifactory'
         ARTIFACTORY_REPO_NAME = 'maven-local-rjst'
         VERSION = ''
         NAME = ''
@@ -27,7 +29,7 @@ pipeline {
             - /bin/cat
             tty: true
           - name: maven
-            image: maven:3.8.5-openjdk-17
+            image: maven:3.8.8-eclipse-temurin-21
             command: ["cat"]
             tty: true
             volumeMounts:
@@ -89,7 +91,7 @@ pipeline {
             }
             steps {
                 container('maven') {
-                    sh 'mvn package -s /usr/maven/settings.xml -Dmaven.wagon.http.ssl.insecure=true'
+                    sh """mvn package -s /usr/maven/settings.xml -Dmaven.wagon.http.ssl.insecure=true -DskipTests=true"""
                 }
             }
         }
@@ -110,7 +112,7 @@ pipeline {
         stage('Artifactory: UPLOAD') {
             when {
                 expression {
-                    !params.RELEASE
+                    !params.RELEASE && params.ARTIFACTORY
                 }
             }
             steps {
@@ -148,11 +150,7 @@ pipeline {
             }
             steps {
                 script {
-                    if (VERSION.contains("SNAPSHOT")) {
-                        addBadge(icon: "https://cdn.icon-icons.com/icons2/326/PNG/64/Letter_S_gold_34881.png", text: "${VERSION}")
-                    } else {
-                        addBadge(icon: "https://cdn.icon-icons.com/icons2/326/PNG/64/Letter_V_lg_34849.png", text: "${VERSION}")
-                    }
+                    addShortText(text: "Version: ${VERSION}")
                 }
             }
         }
@@ -164,12 +162,16 @@ pipeline {
                 }
             }
             steps {
-                container('kubectl') {
-                    withCredentials([file(credentialsId: 'kubeConfig', variable: 'KUBECONFIG')]) {
-                        sh """sed -i 's/<TAG>/${VERSION}/' ${NAME}.yaml"""
-                        sh """sed -i 's/<NAME>/${NAME}/' ${NAME}.yaml"""
-                        sh """kubectl delete -f ${NAME}.yaml"""
-                        sh """kubectl apply -f ${NAME}.yaml"""
+                script {
+                    container('kubectl') {
+                        withCredentials([file(credentialsId: 'kubeConfig', variable: 'KUBECONFIG')]) {
+                            sh """sed -i 's/<TAG>/${VERSION}/' ${NAME}.yaml"""
+                            sh """sed -i 's/<NAME>/${NAME}/' ${NAME}.yaml"""
+                            if(!params.INIT_DEPLOYMENT) {
+                                sh """kubectl delete -f ${NAME}.yaml"""
+                            }
+                            sh """kubectl apply -f ${NAME}.yaml"""
+                        }
                     }
                 }
             }
