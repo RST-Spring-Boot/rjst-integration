@@ -40,7 +40,7 @@ spec:
             - name: <NAME>-cfg
               mountPath: /app/config
             - name: cache-volume
-              mountPath: /tmp
+              mountPath: /var/cache/nginx/client_temp
       volumes:
         - name: <NAME>-cfg
           configMap:
