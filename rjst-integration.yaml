@@ -78,7 +78,7 @@ spec:
     name: self-issuer
     kind: ClusterIssuer
   dnsNames:
-    - <NAME>.rjst.de
+    - <NAME>.vpn.rjst.de
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -90,7 +90,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: traefik-red-https@kubernetescrd,traefik-whitelist@kubernetescrd
 spec:
   rules:
-    - host: <NAME>.rjst.de
+    - host: <NAME>.vpn.rjst.de
       http:
         paths:
           - pathType: Prefix
@@ -102,7 +102,7 @@ spec:
                   number: 8080
   tls:
     - hosts:
-        - <NAME>.rjst.de
+        - <NAME>.vpn.rjst.de
       secretName: <NAME>-cert
 
 ---
@@ -132,7 +132,7 @@ data:
             url: http://rjst-spring-boot-admin.dev.svc.cluster.local:8080
             instance:
               prefer-ip: false
-              service-base-url: https://rjst-integration.rjst.de
+              service-base-url: https://rjst-integration.vpn.rjst.de
               management-base-url: http://rjst-integration.dev.svc.cluster.local:8080
               name: rjst-integration
     springdoc:
