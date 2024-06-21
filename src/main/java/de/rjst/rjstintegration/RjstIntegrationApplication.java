@@ -11,6 +11,7 @@ import org.springframework.integration.http.config.EnableIntegrationGraphControl
 @SpringBootApplication
 @EnableIntegration
 @EnableIntegrationGraphController
+@EnableIntegrationManagement
 @EnableFeignClients
 public class RjstIntegrationApplication {
 
