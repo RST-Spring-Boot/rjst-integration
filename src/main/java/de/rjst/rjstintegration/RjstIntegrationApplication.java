@@ -10,7 +10,7 @@ import org.springframework.integration.http.config.EnableIntegrationGraphControl
 
 @SpringBootApplication
 @EnableIntegration
-@IntegrationComponentScan
+@EnableIntegrationGraphController
 @EnableFeignClients
 public class RjstIntegrationApplication {
 
