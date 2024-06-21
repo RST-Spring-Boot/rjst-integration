@@ -133,7 +133,6 @@ data:
           client:
             url: http://rjst-spring-boot-admin.dev.svc.cluster.local:8080
             instance:
-              prefer-ip: false
               service-base-url: https://rjst-integration.vpn.rjst.de
               management-base-url: http://rjst-integration.dev.svc.cluster.local:8080
               name: rjst-integration
@@ -145,6 +144,9 @@ data:
         web:
           exposure:
             include: '*'
+          cors:
+            allowed-methods: '*'
+            allowed-origins: '*'
       endpoint:
         health:
           show-details: always
