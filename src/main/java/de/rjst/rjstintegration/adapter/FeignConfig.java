@@ -1,4 +1,4 @@
-package de.rjst.rjstintegration.config;
+package de.rjst.rjstintegration.adapter;
 
 import feign.Client;
 import org.springframework.cloud.openfeign.FeignClientProperties;

@@ -1,12 +1,10 @@
-package de.rjst.rjstintegration.controller;
+package de.rjst.rjstintegration.rest;
 
 
 import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
 import de.rjst.rjstintegration.FlowType;
 import de.rjst.rjstintegration.database.UserEntity;
-import de.rjst.rjstintegration.database.UserRepository;
-import de.rjst.rjstintegration.flow.UserGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

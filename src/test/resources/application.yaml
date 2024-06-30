@@ -10,7 +10,12 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
-
+  cloud:
+    openfeign:
+      client:
+        config:
+          json:
+            url: https://json-api-service.vpn.rjst.de
 
 springdoc:
   swagger-ui:

@@ -8,11 +8,12 @@ import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.config.EnableIntegrationManagement;
 import org.springframework.integration.http.config.EnableIntegrationGraphController;
 
-@SpringBootApplication
+
 @EnableIntegration
 @EnableIntegrationGraphController
 @EnableIntegrationManagement
 @EnableFeignClients
+@SpringBootApplication
 public class RjstIntegrationApplication {
 
     public static void main(String[] args) {

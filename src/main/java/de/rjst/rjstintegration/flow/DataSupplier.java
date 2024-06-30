@@ -5,6 +5,8 @@ import de.rjst.rjstintegration.database.UserEntity;
 import de.rjst.rjstintegration.database.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -16,8 +18,9 @@ public class DataSupplier implements Supplier<List<UserEntity>> {
 
     private final UserRepository userRepository;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public List<UserEntity> get() {
-        return userRepository.findByStatusAndFlowType(0, FlowType.A);
+        return userRepository.findByStatus(0);
     }
 }

@@ -1,4 +1,4 @@
-package de.rjst.rjstintegration.flow;
+package de.rjst.rjstintegration.rest;
 
 import de.rjst.rjstintegration.database.UserEntity;
 import de.rjst.rjstintegration.database.UserRepository;
