@@ -11,19 +11,20 @@ import org.springframework.messaging.MessageChannel;
 
 @RequiredArgsConstructor
 @Configuration
-public class FlowAConfig {
+public class FlowBConfig {
 
     private final GenericTransformer<UserEntity, UserEntity> dataSendTransformer;
     private final MessageChannel finishChannel;
 
     @Bean
-    public MessageChannel receiverChannelA() {
+    public MessageChannel receiverChannelB() {
         return new DirectChannel();
     }
 
+
     @Bean
-    public IntegrationFlow flowA(final MessageChannel receiverChannelA) {
-        return IntegrationFlow.from(receiverChannelA)
+    public IntegrationFlow flowB(final MessageChannel receiverChannelB) {
+        return IntegrationFlow.from(receiverChannelB)
                 .transform(dataSendTransformer)
                 .channel(finishChannel)
                 .get();

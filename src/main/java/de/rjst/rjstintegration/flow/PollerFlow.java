@@ -40,6 +40,8 @@ public class PollerFlow {
                 .split()
                 .routeToRecipients(route -> route
                         .<UserEntity> recipient("receiverChannelA", p -> p.getFlowType() == FlowType.A)
+                        .<UserEntity> recipient("receiverChannelB", p -> p.getFlowType() == FlowType.B)
+                        .<UserEntity> recipient("receiverChannelC", p -> p.getFlowType() == FlowType.C)
                 )
                 .get();
     }

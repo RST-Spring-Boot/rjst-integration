@@ -21,6 +21,8 @@ public class DataSupplier implements Supplier<List<UserEntity>> {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public List<UserEntity> get() {
-        return userRepository.findByStatus(0);
+        final List<UserEntity> users = userRepository.findByStatus(0);
+        users.forEach(user -> user.setStatus(10000));
+        return userRepository.saveAll(users);
     }
 }
