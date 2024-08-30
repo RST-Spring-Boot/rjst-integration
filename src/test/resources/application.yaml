@@ -10,12 +10,18 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+    open-in-view: false
   cloud:
     openfeign:
       client:
         config:
           json:
             url: https://json-api-service.vpn.rjst.de
+            logger-level: full
+
+logging:
+  level:
+    de.rjst.rjstintegration.adapter: debug
 
 springdoc:
   swagger-ui:
