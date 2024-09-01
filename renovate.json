@@ -14,9 +14,10 @@
       "groupSlug": "all",
       "matchPackagePatterns": [
         "*"
-      ]
+      ],
+      "automerge": true,
+      "automergeType": "pr"
     }
   ],
   "separateMajorMinor": false
 }
-
