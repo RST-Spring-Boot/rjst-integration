@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/rjst-integration/Chart.lock
+/rjst-integration/charts/

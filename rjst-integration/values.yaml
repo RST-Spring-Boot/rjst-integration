@@ -1,5 +1,6 @@
 spring-boot:
   fullnameOverride: "rjst-integration"
   appVersion: "0.0.0"
+  replicaCount: 1
   istio:
     url: "rjst-integration.vpn.rjst.de"
