@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 @Service
 public class PollerFlow {
 
-    private static final Integer POLLING_INTERVAL = 10;
+    private static final Integer POLLING_INTERVAL = 1;
 
     private final Supplier<List<UserEntity>> dataSupplier;
 
@@ -35,7 +35,7 @@ public class PollerFlow {
     @Bean
     public IntegrationFlow firstFlow() {
         return IntegrationFlow.fromSupplier(dataSupplier,
-                        flow -> flow.poller(Pollers.fixedDelay(Duration.ofSeconds(POLLING_INTERVAL))
+                        flow -> flow.poller(Pollers.fixedDelay(Duration.ofHours(POLLING_INTERVAL))
                         ))
                 .split()
                 .routeToRecipients(route -> route
