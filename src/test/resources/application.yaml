@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://vpn.rjst.de:5432/integration
     username: postgres
-    password: PMZk1m2RgQ0foHsTh3yEsbBmR4vhl8
+    password: 70pNJTkISyghR9puwGKLjt2XGl38tv
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 1
