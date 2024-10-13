@@ -1,0 +1,11 @@
+apiVersion: v2
+name: rjst-integration
+description: Spring Integration
+
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
+dependencies:
+  - name: spring-boot
+    version: 0.1.0
+    repository: oci://core.harbor.vpn.rjst.de/dev/chart

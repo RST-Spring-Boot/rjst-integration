@@ -1,0 +1,5 @@
+spring-boot:
+  fullnameOverride: "rjst-integration"
+  appVersion: "0.0.0"
+  istio:
+    url: "rjst-integration.vpn.rjst.de"

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spring-boot.fullname" . }}-cfg
+  labels:
+    {{- include "spring-boot.labels" . | nindent 4 }}
+data:
+  application.yaml: |
+    spring:
+      datasource:
+        url: jdbc:mariadb://vpn.rjst.de:3306/fivem
+        driver-class-name: org.mariadb.jdbc.Driver
+      jpa:
+        hibernate:
+          ddl-auto: none
+        show-sql: true
