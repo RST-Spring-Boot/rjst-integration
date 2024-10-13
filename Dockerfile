@@ -2,7 +2,7 @@ FROM eclipse-temurin:21.0.4_7-jre-jammy@sha256:d1c536be5ba42ea6d793b8eb67b8ced61
 
 RUN mkdir -p /app
 
-COPY backend/target/*.jar /app/app.jar
+COPY target/*.jar /app/app.jar
 
 WORKDIR /app
 
