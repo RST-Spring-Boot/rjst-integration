@@ -8,9 +8,32 @@ data:
   application.yaml: |
     spring:
       datasource:
-        url: jdbc:mariadb://vpn.rjst.de:3306/fivem
-        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:postgresql://vpn.rjst.de:5432/integration
+        hikari:
+          minimum-idle: 1
       jpa:
         hibernate:
           ddl-auto: none
         show-sql: true
+        open-in-view: false
+      cloud:
+        openfeign:
+          client:
+            config:
+              json:
+                url: https://json-api-service.vpn.rjst.de
+                logger-level: full
+      boot:
+        admin:
+          client:
+            url: http://rjst-spring-boot-admin.dev.svc.cluster.local
+            instance:
+              service-base-url: https://rjst-integration.vpn.rjst.de
+              management-base-url: http://rjst-integration.dev.svc.cluster.local
+              name: rjst-integration
+    logging:
+      level:
+        de.rjst.rjstintegration.adapter: debug
+    springdoc:
+      swagger-ui:
+        use-root-path: true
