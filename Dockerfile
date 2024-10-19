@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21.0.4_7-jre-jammy@sha256:245bf4e3e574bb0513e737cc8f85b9544faaf2964e6f8fd6a825af646d6ca846
+FROM eclipse-temurin:21.0.4_7-jre-jammy@sha256:ce644c2da74d34ca9b9ddd6d3aa72d0f80a4d8f90454270985af8fc986c60dfc
 
 RUN mkdir -p /app
 
